@@ -12,6 +12,7 @@ import (
 
 var (
 	command          string
+	arguments        []string
 	directory        string
 	cmd              *exec.Cmd
 	stdout           io.ReadCloser
@@ -110,7 +111,11 @@ func buildApp() error {
 }
 
 func launchApp() {
-	cmd = exec.Command(command)
+	if len(os.Args) >= 2 {
+		arguments = os.Args[2:]
+	}
+
+	cmd = exec.Command(command, arguments...)
 	cmd.Dir = directory
 
 	stdout, _ = cmd.StdoutPipe()
